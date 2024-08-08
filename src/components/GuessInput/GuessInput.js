@@ -1,41 +1,32 @@
-import React from 'react';
-import { useState } from 'react';
-import GuessResults from '../GuessResults/GuessResults';
+import React, { useState } from 'react';
 
-function GuessInput() {
-  const [guess, setGuess] = useState('')
-  const [guesses, setGuesses] = useState([])
+function GuessInput({ handleSubmitGuess }) {
+const [tentativeGuess, setTentativeGuess] = useState('')
 
-  function onGuessInput(guess) {
-    if (guess.length > 5)
+  function onGuessInput(guessInput) {
+    if (guessInput.length > 5)
       return
-    setGuess(guess.toUpperCase())
+    setTentativeGuess(guessInput)
   }
 
   function onSubmit(event) {
     event.preventDefault()
-    const nextGuess = { id: crypto.randomUUID(), guess }
-    const nextGuesses = [...guesses, nextGuess]
-    setGuesses(nextGuesses)
-
-    console.log({ nextGuess })
-    setGuess('')
+    handleSubmitGuess(tentativeGuess)
+    setTentativeGuess('')
   }
 
   return (
-    <>
-      <GuessResults guesses={guesses} />
-      <form className='guess-input-wrapper' onSubmit={onSubmit}>
-        <label htmlFor='guess-input'>Enter guess:</label>
-        <input
-          id='guess-input'
-          type='text'
-          value={guess}
-          onChange={event => onGuessInput(event.target.value)}
-          pattern='[\w]{5}'
-        />
-      </form>
-    </>)
+    <form className='guess-input-wrapper' onSubmit={onSubmit}>
+      <label htmlFor='guess-input'>Enter guess:</label>
+      <input
+        id='guess-input'
+        type='text'
+        value={tentativeGuess}
+        onChange={event => onGuessInput(event.target.value.toUpperCase())}
+        pattern='[\w]{5}'
+      />
+    </form>
+  )
 }
 
 export default GuessInput;
