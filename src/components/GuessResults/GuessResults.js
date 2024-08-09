@@ -5,24 +5,18 @@ import Guess from '../Guess'
 import { checkGuess } from '../../game-helpers'
 
 function GuessResults({ guesses, answer }) {
-  return (
-    <div className="guess-results">
-      {range(NUM_OF_GUESSES_ALLOWED).map((rowIndex) => {
-        const currentGuess =
-          guesses.length >= rowIndex ? guesses[rowIndex] : null
-        const currentGuessStatus = currentGuess
-          ? checkGuess(currentGuess, answer)
-          : null
-        return (
-          <Guess
-            key={rowIndex}
-            value={currentGuess}
-            status={currentGuessStatus}
-          />
-        )
-      })}
-    </div>
-  )
+  const guessRows = range(NUM_OF_GUESSES_ALLOWED).map((rowIndex) => {
+    const currentGuess = guesses.length >= rowIndex ? guesses[rowIndex] : null
+    const currentGuessStatus = currentGuess
+      ? checkGuess(currentGuess, answer)
+      : null
+
+    return (
+      <Guess key={rowIndex} value={currentGuess} status={currentGuessStatus} />
+    )
+  })
+
+  return <div className="guess-results">{guessRows}</div>
 }
 
 export default GuessResults

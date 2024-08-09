@@ -5,6 +5,8 @@ import { sample } from '../../utils'
 import GuessInput from '../GuessInput'
 import { NUM_OF_GUESSES_ALLOWED } from '../../constants'
 import GuessResults from '../GuessResults/GuessResults'
+import HappyBanner from '../HappyBanner/HappyBanner'
+import SadBanner from '../SadBanner/SadBanner'
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS)
@@ -13,19 +15,31 @@ console.info({ answer })
 
 function Game() {
   const [guesses, setGuesses] = useState([])
+  const [status, setStatus] = useState('running')
 
   function handleSubmitGuess(tentativeGuess) {
     if (guesses.length >= NUM_OF_GUESSES_ALLOWED) {
       return
     }
+    const nextGuesses = [...guesses, tentativeGuess]
     // @ts-ignore
-    setGuesses([...guesses, tentativeGuess])
-  }
+    setGuesses(nextGuesses)
 
+    if (tentativeGuess === answer) {
+      setStatus('won')
+    } else if (nextGuesses.length >= NUM_OF_GUESSES_ALLOWED) {
+      setStatus('lost')
+    }
+  }
   return (
     <>
       <GuessResults guesses={guesses} answer={answer} />
-      <GuessInput handleSubmitGuess={handleSubmitGuess} />
+      <GuessInput
+        handleSubmitGuess={handleSubmitGuess}
+        enabled={status === 'running'}
+      />
+      {status === 'won' && <HappyBanner nrOfGuesses={guesses.length} />}
+      {status === 'lost' && <SadBanner correctAnswer={answer} />}
     </>
   )
 }
