@@ -1,6 +1,7 @@
 import React from 'react';
 import Game from '../Game';
 import Header from '../Header';
+import GameHandlerProvider from '../GameHandlerProvider';
 
 function App() {
   return (
@@ -8,7 +9,9 @@ function App() {
       <Header />
 
       <div className="game-wrapper">
-        <Game />
+        <GameHandlerProvider>
+          <Game />
+        </GameHandlerProvider>
       </div>
     </div>
   );

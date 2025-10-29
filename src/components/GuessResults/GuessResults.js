@@ -3,8 +3,11 @@ import { range } from '../../utils'
 import { NUM_OF_GUESSES_ALLOWED } from '../../constants'
 import Guess from '../Guess'
 import { checkGuess } from '../../game-helpers'
+import { GameHandlerContext } from '../GameHandlerProvider'
 
-function GuessResults({ guesses, answer }) {
+function GuessResults() {
+  const { guesses, answer } = React.useContext(GameHandlerContext);
+
   const guessRows = range(NUM_OF_GUESSES_ALLOWED).map((rowIndex) => {
     const currentGuess = guesses.length >= rowIndex ? guesses[rowIndex] : null
     const currentGuessStatus = currentGuess

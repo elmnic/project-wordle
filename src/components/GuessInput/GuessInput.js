@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { GameHandlerContext } from '../GameHandlerProvider'
 
-function GuessInput({ handleSubmitGuess, enabled }) {
+function GuessInput() {
+  const { status, submitGuess } = React.useContext(GameHandlerContext);
   const [tentativeGuess, setTentativeGuess] = useState('')
 
   function onGuessInput(guessInput) {
@@ -10,7 +12,7 @@ function GuessInput({ handleSubmitGuess, enabled }) {
 
   function onSubmit(event) {
     event.preventDefault()
-    handleSubmitGuess(tentativeGuess)
+    submitGuess(tentativeGuess)
     setTentativeGuess('')
   }
 
@@ -23,7 +25,7 @@ function GuessInput({ handleSubmitGuess, enabled }) {
         value={tentativeGuess}
         onChange={(event) => onGuessInput(event.target.value.toUpperCase())}
         pattern="[\w]{5}"
-        disabled={!enabled}
+        disabled={status === 'running'}
       />
     </form>
   )
